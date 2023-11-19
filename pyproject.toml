@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "fsl3cgm"
+version = "0.1.0"
+description = "A package to fetch data from the FreeStyle Libre3 CGM"
+authors = ["Cj Mullins <Mullins.cj@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
