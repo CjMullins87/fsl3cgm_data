@@ -57,3 +57,22 @@ class Creds:
             pass
         else:
             raise TokenExpired("Your included token has expired.")
+
+    def write_fsl3_credentials_json(self):
+        """Writes data from the current creds object to the local drive."""
+
+        creds = {
+            "user_info": {
+                "user_email": self.user_email,
+                "password": self.password,
+                "patient_id": self.patient_id,
+            },
+            "auth": {"token": self.token, "expires": self.token_expires},
+        }
+
+        try:
+            credsfile = open(ROOT_DIR / "fsl3_credentials.json", "w")
+            json.dump(creds, credsfile)
+
+        except Exception:
+            raise Exception("Creds file wasn't able to be saved!")

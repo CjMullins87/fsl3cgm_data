@@ -166,3 +166,6 @@ cython_debug/
 
 # Avoid pushing in credentials with PII
 **_credentials.json
+
+# Avoid pushing in someone's cgm db
+**.db

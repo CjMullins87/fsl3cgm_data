@@ -1,4 +1,4 @@
-"""Connects to FreeStyle API and fetches data"""
+"""Connects to FreeStyle's LibreLinkUp API and fetches data"""
 
 import requests
 
@@ -55,7 +55,7 @@ class FreeStyleAPI:
         Returns:
             Tuple: (token, expiration_date)
         """
-        # This enpodint is used to retrieve an auth token.
+        # This endpoint is used to retrieve an auth token.
         # in experimentation it continued to return the same data, even
         # if a header containing "authentication" information was passed
         endpoint = "llu/auth/login"
@@ -92,14 +92,37 @@ class FreeStyleAPI:
         resp = self._call_api("get", endpoint)
 
         # Extract and write
-        _id = resp.json()["data"][0]["patientId"]
+        _id = resp["data"][0]["patientId"]
         self.creds.patient_id = _id
 
         if return_id:
             return _id
 
     def get_graph_data(self):
-        # Make the call
+        """Retrieve's the patient's graph data, this has about 8 hours of history.
+
+        Returns:
+            dict: the graphData json structure
+        """
         endpoint = f"llu/connections/{self.creds.patient_id}/graph"
         resp = self._call_api("get", endpoint)
-        ...
+
+        # graphdata lives here:
+        graphdata = resp["data"]["graphData"]
+
+        # graphdata is shaped like this:
+        # [
+        # {
+        # "FactoryTimestamp": "5/21/2022 1:39:50 AM",
+        # "Timestamp": "5/21/2022 3:39:50 AM",
+        # "type": 0,
+        # "ValueInMgPerDl": 117,
+        # "MeasurementColor": 1,
+        # "GlucoseUnits": 1,
+        # "Value": 117,
+        # "isHigh": False,
+        # "isLow": False
+        # },
+        # ]
+
+        return graphdata
