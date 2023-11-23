@@ -6,7 +6,7 @@ from fsl3cgm.creds import Creds
 
 
 class FreeStyleAPI:
-    def __init__(self, creds: Creds = None):
+    def __init__(self, creds: Creds):
         """Basic connection components"""
         # Android headers, because we're using the Android API for access
         # NOTE: the versions change often enough, so we'll need a way to rotate
@@ -67,9 +67,10 @@ class FreeStyleAPI:
         token = resp["data"]["authTicket"]["token"]
         expiry = resp["data"]["authTicket"]["expires"]
 
-        # update the creds object
+        # update the creds object and headers
         self.creds.token = token
         self.creds.token_expires = expiry
+        self.headers["authorization"] = f"Bearer {self.creds.token}"
 
         if return_token:
             return (token, expiry)
